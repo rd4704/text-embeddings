@@ -4,10 +4,22 @@ from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 import tensorflow.compat.v1 as tf
 import tensorflow_hub as hub
+from flask import Flask
+
+##### API #####
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "Hello, World!"
 
 ##### INDEXING #####
 
 def index_data():
+    if client.indices.exists(index=INDEX_NAME):
+        return
+
     print("Creating the 'posts' index.")
     client.indices.delete(index=INDEX_NAME, ignore=[404])
 
